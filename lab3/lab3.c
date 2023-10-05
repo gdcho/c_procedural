@@ -28,27 +28,27 @@ void rotateArray(char **arr, int n, int rows, int cols)
 
 // Function to zoom (expand or shrink) a 2D array by a given factor
 void zoomArray(char **arr, double zoomFactor, int *rows, int *cols) {
-    int newRows = (int)(*rows * zoomFactor + 0.5);
-    int newCols = (int)(*cols * zoomFactor + 0.5);
+    int updatedRows = (int)(*rows * zoomFactor + 0.5);
+    int updatedCols = (int)(*cols * zoomFactor + 0.5);
 
-    char **tempArr = (char **)malloc(newRows * sizeof(char *));
-    for (int i = 0; i < newRows; i++) {
-        tempArr[i] = (char *)malloc(newCols * sizeof(char));
-        for (int j = 0; j < newCols; j++) {
+    char **tempArr = (char **)malloc(updatedRows * sizeof(char *));
+    for (int i = 0; i < updatedRows; i++) {
+        tempArr[i] = (char *)malloc(updatedCols * sizeof(char));
+        for (int j = 0; j < updatedCols; j++) {
             int origR = (int)(i / zoomFactor);
             int origC = (int)(j / zoomFactor);
             tempArr[i][j] = arr[origR][origC];
         }
     }
-    for (int i = 0; i < newRows; i++) {
-        for (int j = 0; j < newCols; j++) {
+    for (int i = 0; i < updatedRows; i++) {
+        for (int j = 0; j < updatedCols; j++) {
             arr[i][j] = tempArr[i][j];
         }
         free(tempArr[i]);
     }
     free(tempArr);
-    *rows = newRows;
-    *cols = newCols;
+    *rows = updatedRows;
+    *cols = updatedCols;
 }
 
 int main(int argc, char *argv[]) {

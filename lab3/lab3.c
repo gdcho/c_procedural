@@ -8,8 +8,11 @@ void rotateArray(char **arr, int n, int rows, int cols)
     int rotations = degrees % 4;
 
     for (int i = 0; i < rotations; i++) {
+    	// tempArry pointer to type char for arr elements
+    	// malloc to allocate memory for array of char pointers
         char **tempArr = (char **)malloc(rows * sizeof(char *));
         for (int j = 0; j < rows; j++) {
+            // indexed based on j iterations and memory allocations
             tempArr[j] = (char *)malloc(cols * sizeof(char));
             for (int k = 0; k < cols; k++) {
                 tempArr[j][k] = arr[j][k];
@@ -18,6 +21,7 @@ void rotateArray(char **arr, int n, int rows, int cols)
 
         for (int j = 0; j < rows; j++) {
             for (int k = 0; k < cols; k++) {
+                // store rotated values back 
                 arr[k][rows - 1 - j] = tempArr[j][k];
             }
             free(tempArr[j]);
@@ -28,27 +32,35 @@ void rotateArray(char **arr, int n, int rows, int cols)
 
 // Function to zoom (expand or shrink) a 2D array by a given factor
 void zoomArray(char **arr, double zoomFactor, int *rows, int *cols) {
-    int updatedRows = (int)(*rows * zoomFactor + 0.5);
-    int updatedCols = (int)(*cols * zoomFactor + 0.5);
-
-    char **tempArr = (char **)malloc(updatedRows * sizeof(char *));
-    for (int i = 0; i < updatedRows; i++) {
-        tempArr[i] = (char *)malloc(updatedCols * sizeof(char));
-        for (int j = 0; j < updatedCols; j++) {
-            int origR = (int)(i / zoomFactor);
-            int origC = (int)(j / zoomFactor);
-            tempArr[i][j] = arr[origR][origC];
+    // new calculated dimensions for columns and rows by zoomFactor
+    int factoredRows = (int)(*rows * zoomFactor + 0.5);
+    int factoredCols = (int)(*cols * zoomFactor + 0.5);
+    
+    // allocate memory into tempArr
+    // tempArr created with pointer to type char and based on factoredRows
+    char **tempArr = (char **)malloc(factoredRows * sizeof(char *));
+    for (int i = 0; i < factoredRows; i++) {
+        // pointer to type char for inner arry for columns baseed on factoredCols
+        tempArr[i] = (char *)malloc(factoredCols * sizeof(char));
+        for (int j = 0; j < factoredCols; j++) {
+            // map back to the original array
+            int originalRows = (int)(i / zoomFactor);
+            int originalCols = (int)(j / zoomFactor);
+            // mapped values to be stored in tempArr
+            tempArr[i][j] = arr[originalRows][originalCols];
         }
     }
-    for (int i = 0; i < updatedRows; i++) {
-        for (int j = 0; j < updatedCols; j++) {
+    // copy back to original array
+    for (int i = 0; i < factoredRows; i++) {
+        for (int j = 0; j < factoredCols; j++) {
             arr[i][j] = tempArr[i][j];
         }
         free(tempArr[i]);
     }
     free(tempArr);
-    *rows = updatedRows;
-    *cols = updatedCols;
+    // update the dimensions in the original pointers
+    *rows = factoredRows;
+    *cols = factoredCols;
 }
 
 int main(int argc, char *argv[]) {

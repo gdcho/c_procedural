@@ -2,54 +2,83 @@
 #include <stdlib.h>
 
 // Function to rotate a 2D array by a given angle (in degrees)
-void rotateArray(char **arr, int n, int rows, int cols)
-{
+void rotateArray(char **arr, int n, int rows, int cols) {
     int degrees = (n/90);
     int rotations = degrees % 4;
+    int rotation = 0;
 
-    for (int i = 0; i < rotations; i++) {
-        char **tempArr = (char **)malloc(rows * sizeof(char *));
-        for (int j = 0; j < rows; j++) {
-            tempArr[j] = (char *)malloc(cols * sizeof(char));
-            for (int k = 0; k < cols; k++) {
-                tempArr[j][k] = arr[j][k];
+    while (rotation < rotations) {
+        // tempArry pointer to type char for arr elements
+        // malloc to allocate memory for array of char pointers
+        char **rotatedArr = (char **)malloc(rows * sizeof(char *));
+        int i = 0;
+        while (i < rows) {
+            rotatedArr[i] = (char *)malloc(cols * sizeof(char)); // indexed based on i iterations and memory allocations
+            int j = 0;
+            while (j < cols) {
+                rotatedArr[i][j] = arr[cols - 1 - j][i]; // store rotated values back 
+                j++;
             }
+            i++;
         }
 
-        for (int j = 0; j < rows; j++) {
-            for (int k = 0; k < cols; k++) {
-                arr[k][rows - 1 - j] = tempArr[j][k];
+        i = 0;
+        while (i < rows) {
+            int j = 0;
+            while (j < cols) {
+                arr[i][j] = rotatedArr[i][j];
+                j++;
             }
-            free(tempArr[j]);
+            free(rotatedArr[i]);
+            i++;
         }
-        free(tempArr);
+        free(rotatedArr);
+        rotation++;
     }
 }
 
 // Function to zoom (expand or shrink) a 2D array by a given factor
 void zoomArray(char **arr, double zoomFactor, int *rows, int *cols) {
-    int updatedRows = (int)(*rows * zoomFactor + 0.5);
-    int updatedCols = (int)(*cols * zoomFactor + 0.5);
+    // new calculated dimensions for columns and rows by zoomFactor
+    int factoredRows = (int)(*rows * zoomFactor + 0.5);
+    int factoredCols = (int)(*cols * zoomFactor + 0.5);
+    
+    // allocate memory into tempArr
+    // tempArr created with pointer to type char and based on factoredRows
+    char **resizedArr = (char **)malloc(factoredRows * sizeof(char *));
+    
+    int i = 0;
+    while (i < factoredRows) {
+        // pointer to type char for inner array for columns based on newCols
+        resizedArr[i] = (char *)malloc(factoredCols * sizeof(char));
+        int j = 0;
+        while (j < factoredCols) {
+            // map back to the original array
+            int origRow = (int)(i / zoomFactor);
+            int origCol = (int)(j / zoomFactor);
+            // mapped values to be stored in resizedArr
+            resizedArr[i][j] = arr[origRow][origCol];
+            j++;
+        }
+        i++;
+    }
 
-    char **tempArr = (char **)malloc(updatedRows * sizeof(char *));
-    for (int i = 0; i < updatedRows; i++) {
-        tempArr[i] = (char *)malloc(updatedCols * sizeof(char));
-        for (int j = 0; j < updatedCols; j++) {
-            int origR = (int)(i / zoomFactor);
-            int origC = (int)(j / zoomFactor);
-            tempArr[i][j] = arr[origR][origC];
+    i = 0;
+    while (i < factoredRows) {
+        int j = 0;
+        while (j < factoredCols) {
+            arr[i][j] = resizedArr[i][j]; // copy back to original array
+            j++;
         }
+        free(resizedArr[i]);
+        i++;
     }
-    for (int i = 0; i < updatedRows; i++) {
-        for (int j = 0; j < updatedCols; j++) {
-            arr[i][j] = tempArr[i][j];
-        }
-        free(tempArr[i]);
-    }
-    free(tempArr);
-    *rows = updatedRows;
-    *cols = updatedCols;
+    free(resizedArr);
+    // update the dimensions in the original pointers
+    *rows = factoredRows;
+    *cols = factoredCols;
 }
+
 
 int main(int argc, char *argv[]) {
     if (argc != 4) {

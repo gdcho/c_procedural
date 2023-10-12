@@ -1,0 +1,28 @@
+
+Write a function in C that reverse lines and reverses characters. Your program must read an input from a file that contains single or multiple lines. You can assume a maximum of 100 lines and a maximum of 256 characters in a line.
+>> cat input.txt
+Hi there!
+Whining is a great skill to be a software developer
+Keep it up
+Your future managers will be extremely happy
+
+Your program will output
+yppah ylemetrxe eb lliw sreganam erutuf ruoY
+pu ti peek
+repoleved erawtfos a eb ot lliks taerg a si gninihW
+!ereht iH
+
+Your implementation must be done using recursion. Failure to use recursion will result in 0.
+
+How to Compile and Run 
+gcc lab5.c -o < output executable>
+./<executable> <input file>
+Restrictions
+• You cannot use strtok function
+Grading
+Any grading failure due to not following instructions will result in 0. You will get one chance to show your work to the instructor.
+• (1 point) All files are submitted correctly using the instructions below.
+• (3 point) Generate a correct solution to the problems) in this lab. 2 test inputs will be used.
+Submission Files
+You must submit only one file named: lab5.c
+: Submit it to learning hub before the deadline

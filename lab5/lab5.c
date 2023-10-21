@@ -29,7 +29,7 @@ void reverseLines(FILE *file, int current_line) {
 
     // Reverse and print current line
     line[strcspn(line, "\n")] = 0; // Remove the trailing newline
-    reverseString(line, line + strlen(line) - 1); 
+    reverseString(line, line + strlen(line) - 1);
     printf("%s\n", line);
 }
 

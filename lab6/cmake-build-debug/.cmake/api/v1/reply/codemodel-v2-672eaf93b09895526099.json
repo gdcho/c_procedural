@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/Users/davidcho/CLionProjects/lab6/cmake-build-debug",
-		"source" : "/Users/davidcho/CLionProjects/lab6"
+		"build" : "/Users/davidcho/comp2510/lab6/cmake-build-debug",
+		"source" : "/Users/davidcho/comp2510/lab6"
 	},
 	"version" : 
 	{

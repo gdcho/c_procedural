@@ -1,3 +1,2 @@
 Mary Jackson 4.0 I 100
-Jack He 4.05 D
-Mike Johnson 3.901 D
+Error: Invalid TOEFL score format: Jane Zhang 3.911 I 125

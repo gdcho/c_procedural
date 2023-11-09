@@ -32,7 +32,6 @@ float getValidGPA(const char* gpaString) {
     return val;
 }
 
-// Update the isValidTOEFLScore function to only return true for scores 70 and above
 int isValidTOEFLScore(int score) {
     return score >= 70 && score <= 120;
 }

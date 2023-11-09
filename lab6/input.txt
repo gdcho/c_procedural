@@ -1,4 +1,4 @@
-Mary Jackson 4.0 I 100
-Jack He 4.05 D
-Mike Johnson 2.901 D
-Jane Zhang 3.911 I 125
+Mary Jackson 4.0 I -60
+Jack He 2.45 D
+Mike Johnson 3.125 D
+Jane Zhang 3.8 I 120

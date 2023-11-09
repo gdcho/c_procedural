@@ -1,2 +1,1 @@
-Mary Jackson 4.0 I 100
-Error: Invalid TOEFL score format: Jane Zhang 3.911 I 125
+Error: Invalid TOEFL score format: Mary Jackson 4.0 I -60

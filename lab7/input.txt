@@ -1,8 +1,4 @@
-Jane Rogers A0000001 40 70
-Kim Hazelwood A0100003 95 90
-Kim Hazelwood A0100003 99 100
-Kim Hazelwood A0100003 100 99
-Kim Hazelwood A0100003 98 98
-Kim Hazelwood A0100003 100 100
-David Cho A01351217 100 100
-David Lee A00000020 100 100
+Jane Rogers A0000001 100 100
+Kim Hazelwood A0000003 95 90
+John Kim A0000004 0 90
+Peter Rodriguez A0000005 50 62

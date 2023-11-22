@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Function to add two numbers using bitwise operations
 unsigned long long logicaladder(unsigned long long x, unsigned long long y) {
     while (y != 0) {
         unsigned long long carryOver = x & y;
@@ -10,19 +11,15 @@ unsigned long long logicaladder(unsigned long long x, unsigned long long y) {
     return x;
 }
 
-unsigned long long detectAndHandleOverflow(unsigned long long x, unsigned long long y, int width, int rightShift, int* overflowOccurred) {
-    unsigned long long maxVal = (1ULL << width) - 1;
-    // Check if adding y to x would exceed maxVal
-    *overflowOccurred = y > maxVal - x;
-
+unsigned long long detectoverflow(unsigned long long x, unsigned long long y, int width, int rightShift, int* overflowOccurred) {
     unsigned long long result = logicaladder(x, y);
+    unsigned long long msbMask = 1ULL << (width - 1);
+
+    *overflowOccurred = (x < msbMask && y < msbMask && result >= msbMask);
 
     if (*overflowOccurred) {
-        // If overflow occurs, apply right shift and print message
-        printf("Overflow detected within the specified bitwidth.\n");
         return result >> rightShift;
     } else {
-        // If no overflow, return the result of addition
         return result;
     }
 }
@@ -45,7 +42,7 @@ int main(int argc, char *argv[]) {
     }
 
     int overflowFlag = 0;
-    unsigned long long result = detectAndHandleOverflow(value1, value2, bitWidth, shiftAmount, &overflowFlag);
+    unsigned long long result = detectoverflow(value1, value2, bitWidth, shiftAmount, &overflowFlag);
 
     if (overflowFlag) {
         printf("Result after right shift: %llu\n", result);

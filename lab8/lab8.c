@@ -1,55 +1,42 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Function to add two numbers using bitwise operations
-unsigned long long logicaladder(unsigned long long x, unsigned long long y) {
-    while (y != 0) {
-        unsigned long long carryOver = x & y;
-        x = x ^ y;
-        y = carryOver << 1;
+long long int logicaladder(long long int num1, long long int num2) {
+    long long int carry;
+    while (num2 != 0) {
+        carry = num1 & num2;
+        num1 = num1 ^ num2;
+        num2 = carry << 1;
     }
-    return x;
+    return num1;
 }
 
-unsigned long long detectoverflow(unsigned long long x, unsigned long long y, int width, int rightShift, int* overflowOccurred) {
-    unsigned long long result = logicaladder(x, y);
-    unsigned long long msbMask = 1ULL << (width - 1);
+long long int detectoverflow(long long int sum, int bitwidth, int shift) {
+    long long extended_sum = (long long)sum;
+    long long max = (1LL << bitwidth) - 1;
+    long long min = -(1LL << bitwidth);
 
-    *overflowOccurred = (x < msbMask && y < msbMask && result >= msbMask);
-
-    if (*overflowOccurred) {
-        return result >> rightShift;
+    if (extended_sum > max || extended_sum < min) {
+        printf("Overflow detected within the specified bitwidth.\n");
+        sum = sum >> shift;
+        printf("Result after right shift: %lld\n", sum);
     } else {
-        return result;
+        printf("Result of addition: %lld\n", sum);
     }
+    return sum;
 }
 
 int main(int argc, char *argv[]) {
     if (argc != 5) {
-        fprintf(stderr, "Error: Incorrect number of arguments.\n");
-        fprintf(stderr, "Usage: %s <bitWidth> <value1> <value2> <shift>\n", argv[0]);
-        return 1;
+        printf("Usage: <bitwidth> <num1> <num2> <shift number>\n");
+        return -1;
     }
 
-    int bitWidth = atoi(argv[1]);
-    unsigned long long value1 = strtoull(argv[2], NULL, 10);
-    unsigned long long value2 = strtoull(argv[3], NULL, 10);
-    int shiftAmount = atoi(argv[4]);
-
-    if (bitWidth != 8 && bitWidth != 16 && bitWidth != 32 && bitWidth != 64) {
-        fprintf(stderr, "Error: Unsupported bit width. Choose from 8, 16, 32, or 64.\n");
-        return 1;
-    }
-
-    int overflowFlag = 0;
-    unsigned long long result = detectoverflow(value1, value2, bitWidth, shiftAmount, &overflowFlag);
-
-    if (overflowFlag) {
-        printf("Result after right shift: %llu\n", result);
-        printf("Overflow detected within the specified bitwidth.\n");
-    } else {
-        printf("Result of addition: %llu\n", result);
-    }
-
+    int bitwidth = atoi(argv[1]);
+    long long int num1 = atoll(argv[2]);
+    long long int num2 = atoll(argv[3]);
+    int shift = atoi(argv[4]);
+    long long int sum = logicaladder(num1, num2);
+    detectoverflow(sum, bitwidth - 1, shift);
     return 0;
 }

@@ -17,9 +17,9 @@ long long int detectoverflow(long long int sum, int bitwidth, int shift) {
     long long min = -(1LL << bitwidth);
 
     if (extended_sum > max || extended_sum < min) {
-        printf("Overflow detected within the specified bitwidth.\n");
         sum = sum >> shift;
         printf("Result after right shift: %lld\n", sum);
+        printf("Overflow detected within the specified bitwidth.\n");
     } else {
         printf("Result of addition: %lld\n", sum);
     }

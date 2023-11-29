@@ -3,7 +3,7 @@
 #include <string.h>
 
 typedef enum {
-    INT, FLOAT, CHAR, DOUBLE, SHORT
+    INT, FLOAT, CHAR, DOUBLE, VOID_PTR
 } DataType;
 
 typedef struct Node {
@@ -40,21 +40,33 @@ void insertKeyValue(DoublyLinkedList *list, void *key, size_t keySize, DataType 
     }
 
     newNode->key = malloc(keySize);
+    if (!newNode->key) {
+        free(newNode);
+        fprintf(stderr, "Failed to allocate memory for key.\n");
+        exit(1);
+    }
     memcpy(newNode->key, key, keySize);
     newNode->keySize = keySize;
     newNode->keyType = keyType;
 
     newNode->value = malloc(valueSize);
+    if (!newNode->value) {
+        free(newNode->key);
+        free(newNode);
+        fprintf(stderr, "Failed to allocate memory for value.\n");
+        exit(1);
+    }
     memcpy(newNode->value, value, valueSize);
     newNode->valueSize = valueSize;
     newNode->valueType = valueType;
 
     newNode->next = NULL;
-    newNode->prev = list->tail;
     if (list->tail) {
         list->tail->next = newNode;
+        newNode->prev = list->tail;
     } else {
         list->head = newNode;
+        newNode->prev = NULL;
     }
     list->tail = newNode;
 }
@@ -73,8 +85,8 @@ void printData(void *data, DataType type) {
         case DOUBLE:
             printf("DOUBLE: %lf\n", *(double *)data);
             break;
-        case SHORT:
-            printf("SHORT: %hd\n", *(short *)data);
+        case VOID_PTR:
+            printf("VOID_PTR: %p\n", data);
             break;
         default:
             printf("Unknown type.\n");
@@ -99,7 +111,7 @@ void printValues(const DoublyLinkedList *list) {
 
 DataType getDataType() {
     int type;
-    printf("Choose data type (0: INT, 1: FLOAT, 2: CHAR, 3: DOUBLE, 4: SHORT): ");
+    printf("Choose data type (0: INT, 1: FLOAT, 2: CHAR, 3: DOUBLE, 4: VOID_PTR): ");
     scanf("%d", &type);
     while (getchar() != '\n');  // Clear the input buffer
     return (DataType)type;
@@ -107,42 +119,37 @@ DataType getDataType() {
 
 void *readData(DataType type, size_t *size) {
     void *data;
+    printf("Enter data size in bytes: ");
+    scanf("%zu", size);
+    data = malloc(*size);
+
     switch (type) {
         case INT:
-            *size = sizeof(int);
-            data = malloc(*size);
             printf("Enter an integer: ");
             scanf("%d", (int *)data);
             break;
         case FLOAT:
-            *size = sizeof(float);
-            data = malloc(*size);
             printf("Enter a float: ");
             scanf("%f", (float *)data);
             break;
         case CHAR:
-            *size = sizeof(char);
-            data = malloc(*size);
             printf("Enter a character: ");
+            while (getchar() != '\n');
             scanf("%c", (char *)data);
             break;
         case DOUBLE:
-            *size = sizeof(double);
-            data = malloc(*size);
             printf("Enter a double: ");
             scanf("%lf", (double *)data);
             break;
-        case SHORT:
-            *size = sizeof(short);
-            data = malloc(*size);
-            printf("Enter a short integer: ");
-            scanf("%hd", (short *)data);
+        case VOID_PTR:
+            printf("Enter an integer for void pointer: ");
+            scanf("%d", (int *)data);
             break;
         default:
             printf("Unknown data type.\n");
             data = NULL;
     }
-    while (getchar() != '\n');  // Clear the input buffer
+    while (getchar() != '\n');
     return data;
 }
 
@@ -172,7 +179,7 @@ void saveToFile(const DoublyLinkedList *list, const char *filename) {
     FILE *file = fopen(filename, "wb");
     if (!file) {
         fprintf(stderr, "Failed to open file for writing.\n");
-        exit(1);
+        return;
     }
 
     Node *current = list->head;
@@ -189,12 +196,26 @@ void saveToFile(const DoublyLinkedList *list, const char *filename) {
     fclose(file);
 }
 
+void clearList(DoublyLinkedList *list) {
+    Node *current = list->head;
+    while (current) {
+        Node *temp = current;
+        current = current->next;
+        free(temp->key);
+        free(temp->value);
+        free(temp);
+    }
+    list->head = list->tail = NULL;
+}
+
 void restoreFromFile(DoublyLinkedList *list, const char *filename) {
     FILE *file = fopen(filename, "rb");
     if (!file) {
         fprintf(stderr, "Failed to open file for reading.\n");
-        exit(1);
+        return;
     }
+
+    clearList(list);
 
     size_t keySize, valueSize;
     DataType keyType, valueType;
@@ -217,14 +238,7 @@ void restoreFromFile(DoublyLinkedList *list, const char *filename) {
 }
 
 void freeList(DoublyLinkedList *list) {
-    Node *current = list->head;
-    while (current) {
-        Node *temp = current;
-        current = current->next;
-        free(temp->key);
-        free(temp->value);
-        free(temp);
-    }
+    clearList(list);
     free(list);
 }
 
@@ -266,8 +280,6 @@ int main() {
             case 5: // Restore
                 printf("Type the file name: ");
                 scanf("%s", filename);
-                freeList(list);
-                list = createList();
                 restoreFromFile(list, filename);
                 break;
             case 6: // Exit

@@ -1,0 +1,98 @@
+Test Case 1: Unique and Valid Data for Each Field
+John Doe Jan-15-2000 3.5 D
+Jane Smith Feb-20-1999 3.7 I 100
+Alex Brown Mar-10-2001 3.8 D
+
+Test Case 2: Same Year, Different Months and Days
+John Doe Jan-15-2000 3.5 D
+Jane Smith Feb-20-2000 3.7 D
+Alex Brown Dec-10-2000 3.8 D
+
+Test Case 3: Same Year and Month, Different Days
+John Doe Feb-15-2000 3.5 D
+Jane Smith Feb-20-2000 3.7 D
+Alex Brown Feb-10-2000 3.8 D
+
+Test Case 4: Identical Birth Dates, Different Names
+John Doe Feb-15-2000 3.5 D
+Jane Smith Feb-15-2000 3.7 D
+Alex Brown Feb-15-2000 3.8 D
+
+Test Case 5: Same Name, Different Birth Dates or GPA
+John Doe Jan-15-2000 3.5 D
+John Doe Feb-20-1999 3.7 D
+John Doe Mar-10-2001 3.8 D
+
+Test Case 6: Mix of Domestic and International Students
+John Doe Jan-15-2000 3.5 D
+Jane Smith Feb-20-1999 3.7 I 100
+Alex Brown Mar-10-2001 3.8 D
+Emily White Apr-25-1998 3.6 I 95
+
+Test Case 7: Identical Details Except for GPA (Is it lowest to highest GPA or highest to lowest GPA?)
+John Doe Jan-15-2000 3.5 D
+John Doe Jan-15-2000 3.7 D
+John Doe Jan-15-2000 3.8 D
+
+Test Case 8: Identical Details Except for TOEFL Scores (Is it lowest to highest TOEFL or highest to lowest TOEFL?)
+Jane Smith Feb-20-1999 3.7 I 100
+Jane Smith Feb-20-1999 3.7 I 95
+Jane Smith Feb-20-1999 3.7 I 90
+
+Test Case 9: No TOEFL Score (All Domestic)
+John Doe Jan-15-2000 3.5 D
+Jane Smith Feb-20-1999 3.7 D
+Alex Brown Mar-10-2001 3.8 D
+
+Test Case 10: Identical Names and Birth Dates, Different Statuses
+John Doe Jan-15-2000 3.5 D
+John Doe Jan-15-2000 3.5 I 100
+
+Test Case 11: Invalid Date (e.g., February 30)
+John Doe Feb-30-2000 3.5 D
+
+Test Case 12: Invalid Month (e.g., "Abc")
+Jane Smith Abc-20-1999 3.7 D
+
+Test Case 13: Birth Year Outside Range 1950-2010
+Alex Brown Mar-10-1949 3.8 D
+Emily White Apr-25-2011 3.6 D
+
+Test Case 14: International Student Without TOEFL Score
+Jane Smith Feb-20-1999 3.7 I
+
+Test Case 15: Domestic Student with TOEFL Score
+John Doe Jan-15-2000 3.5 D 80
+
+Test Case 16: GPA Outside Range 0-4.3
+Alex Brown Mar-10-2001 4.5 D
+
+Test Case 17: TOEFL Score Outside Range 0-120
+Jane Smith Feb-20-1999 3.7 I 130
+
+Test Case 18: Invalid Status
+John Doe Jan-15-2000 3.5 X
+
+Test Case 19: Empty Input
+(empty file)
+
+Test Case 20: Large Number of Students
+(Generate a file with a large number of students, with varied and random data)
+
+Test Case 21: Leap Year Birthdays
+Jane Smith Feb-29-2000 3.7 D
+
+Test Case 22: Same GPA, Different TOEFL Scores or Names
+John Doe Jan-15-2000 3.5 D
+Jane Smith Feb-20-1999 3.5 I 100
+Alex Brown Mar-10-2001 3.5 I 90
+
+Test Case 23: Correct Output File Format
+John Doe Jan-15-2000 3.5 D
+Jane Smith Feb-20-1999 3.7 I 100
+
+Test Case 24: Corrupted or Incorrectly Formatted Input File
+John Doe Jan-15-2000 3.5 D
+Jane Smith Feb-20-1999 3.7 I ABC
+
+Test Case 25: Invalid Command-Line Arguments
